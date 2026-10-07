@@ -51,6 +51,16 @@ body.edit .b{display:flex!important}body.edit #js{display:block!important}body.e
 .mp{margin:0 0 14px}#uname{width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:0;font-size:16px;text-align:center}
 .srv{display:flex;justify-content:space-between;padding:9px 12px;margin:4px 0;background:rgba(0,0,0,.4);border-radius:8px;font-size:14px;cursor:pointer}
 #mpnote{font-size:12px;opacity:.85;margin-top:4px}
+#chatBtn{right:66px;top:calc(env(safe-area-inset-top,0px) + 114px)}
+#chatlog{position:fixed;left:10px;bottom:calc(env(safe-area-inset-bottom,0px) + 160px);width:min(62vw,380px);color:#fff;font:600 14px/1.4 system-ui;text-shadow:0 1px 2px #000;pointer-events:none;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.hide-touch #chatlog{bottom:calc(env(safe-area-inset-bottom,0px) + 40px)}
+#chatlog div{background:rgba(0,0,0,.4);padding:3px 9px;border-radius:7px;overflow-wrap:anywhere;transition:opacity .8s}
+#chatlog div.old{opacity:0}body.chatting #chatlog div.old{opacity:1}
+#chatlog b{color:#7fd4ff}#chatlog .me b{color:#f2c230}#chatlog .sys{color:#d8f0ff;font-style:italic;font-weight:500}
+#chatbar{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 56px);transform:translateX(-50%);width:min(92vw,440px);display:none;gap:6px;z-index:40}
+body.chatting #chatbar{display:flex}
+#chatin{flex:1;min-width:0;padding:10px 12px;border:0;border-radius:8px;font-size:16px;background:rgba(0,0,0,.72);color:#fff;outline:2px solid #f2c230;user-select:text;-webkit-user-select:text}
+#chatbar button{padding:0 16px;border:0;border-radius:8px;font-weight:700;background:#f2c230;color:#222;font-size:15px}
 #msg{position:fixed;left:0;right:0;bottom:6px;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 2px #000;pointer-events:none}
 </style></head><body>
 <div id="hot"></div><div id="cross"></div>
@@ -60,20 +70,20 @@ body.edit .b{display:flex!important}body.edit #js{display:block!important}body.e
 <li>🖥️ <b>Desktop:</b> WASD, Space, click = shoot, right-click = place, E = break, 1-7 = blocks</li>
 <li>⌨️ <b>Mouse + keyboard on a tablet/phone:</b> they work alongside the touch controls. Tap 🖐 on the side (or press T) to hide the touch controls</li>
 <li>💣 <b>TNT:</b> button or Q. Explodes after 3s: 50 damage, knockback, 2s ragdoll</li>
-<li>👁 V = first/third person · 😀 G = emotes · K = skins</li></ul>
+<li>👁 V = first/third person · 😀 G = emotes · K = skins</li><li>💬 <b>Chat:</b> Enter or 💬 on servers. A filter blocks bad words, links and phone numbers</li></ul>
 <div class="mp"><input id="uname" maxlength="16" placeholder="Username" autocomplete="off" spellcheck="false">
 <div style="font-size:13px;margin:8px 0 2px">🌐 Public servers</div><div id="srvs"></div><div id="mpnote">Looking for online servers...</div></div>
 <div id="play">▶ Play solo (70 bots)</div><div id="cust" style="margin-top:16px;font-size:14px;text-decoration:underline;cursor:pointer">🎛 Customize touch controls</div></div></div><div id="ed"><b>Customize controls</b><div style="opacity:.8;margin:2px 0 8px">Drag a control to move it. Tap one to select it, then resize.</div>
 <div class="r"><span id="sellbl">Joystick</span><span>Size</span></div><input id="sz" type="range" min="50" max="170" value="100">
 <div class="r"><span>Opacity (all)</span></div><input id="op" type="range" min="20" max="100" value="100">
-<div class="r2"><button id="edReset">Reset</button><button id="edDone">Done</button></div></div><div id="hud"></div><div id="feed"></div><div class="tb" id="skinBtn">👕</div><div class="tb" id="emoBtn">😀</div><div class="tb" id="viewBtn">👁</div><div class="tb" id="editBtn">🎛</div><div class="tb" id="touchBtn">🖐</div><div id="skins"></div><div class="tb" id="guideBtn">⌨</div>
+<div class="r2"><button id="edReset">Reset</button><button id="edDone">Done</button></div></div><div id="hud"></div><div id="feed"></div><div class="tb" id="skinBtn">👕</div><div class="tb" id="emoBtn">😀</div><div class="tb" id="viewBtn">👁</div><div class="tb" id="editBtn">🎛</div><div class="tb" id="touchBtn">🖐</div><div id="skins"></div><div class="tb" id="guideBtn">⌨</div><div class="tb" id="chatBtn">💬</div><div id="chatlog"></div><div id="chatbar"><input id="chatin" maxlength="120" placeholder="Say something nice..." autocomplete="off" autocorrect="off" enterkeyhint="send"><button id="chatSend">Send</button></div>
 <div id="guide"><h3>⌨ PC controls <span style="opacity:.6;font-weight:400">(tap to close)</span></h3>
 <div><b>W A S D</b> move</div><div><b>Space</b> jump (hold = bhop)</div><div><b>C / Ctrl</b> crouch</div>
 <div><b>Mouse</b> look</div><div><b>Left click</b> shoot</div><div><b>Right click</b> place block</div>
 <div><b>E</b> break block</div><div><b>Q</b> throw TNT</div><div><b>1-7 / wheel</b> pick block</div>
 <div><b>V</b> first/third person</div><div><b>G</b> emote wheel</div><div><b>K</b> skins</div>
 <div><b>T</b> hide touch controls</div>
-<div><b>H</b> this guide</div><div><b>Esc</b> release mouse</div></div><div id="wheel"></div><div class="b" id="fire">Fire</div><div class="b" id="tnt">TNT</div><div class="b" id="crouch">Crouch</div><div class="b" id="jump">Jump</div><div class="b" id="brk">Break</div><div class="b" id="plc">Place</div>
+<div><b>Enter or /</b> chat</div><div><b>H</b> this guide</div><div><b>Esc</b> release mouse</div></div><div id="wheel"></div><div class="b" id="fire">Fire</div><div class="b" id="tnt">TNT</div><div class="b" id="crouch">Crouch</div><div class="b" id="jump">Jump</div><div class="b" id="brk">Break</div><div class="b" id="plc">Place</div>
 <div id="msg">70 armed bots fight everyone. 👁 = switch first/third person (V). Fire at them (aim for heads!) · Desktop: click=shoot, right-click=place, E=break</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -227,7 +237,7 @@ addEventListener('pointerdown',e=>setMode(e.pointerType==='mouse'),true);
 addEventListener('pointermove',e=>{if(e.pointerType==='mouse')setMode(true)},true);
 let lockFailed=false,mX=-1,mY=-1,lX=null,lY=null;
 function tryLock(){try{const r=R.domElement.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
-const menuOpen=()=>wheel.classList.contains('on')||skp.style.display=='grid';
+const menuOpen=()=>wheel.classList.contains('on')||skp.style.display=='grid'||chatting;
 function look(dx,dy){p.yaw-=dx*.0025;p.pitch=Math.max(-1.5,Math.min(1.5,p.pitch-dy*.0025))}
 document.addEventListener('pointerlockchange',()=>{const m=document.getElementById('msg');
  if(document.pointerLockElement)m.style.display='none';
@@ -244,7 +254,7 @@ function edgeLook(dt){
 const act=()=>document.pointerLockElement||(pcMode&&started&&!menuOpen());
 // desktop controls
 const keys={};
-addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;setMode(true);keys[e.code]=1;if(e.code=='KeyK'){wheel.classList.remove('on');skp.style.display=skp.style.display=='grid'?'none':'grid';if(skp.style.display=='grid'&&document.exitPointerLock)document.exitPointerLock()}if(e.code=='KeyE')brk();if(e.code=='KeyG')toggleWheel();if(e.code=='KeyQ')spawnTNT();if(e.code=='KeyV')toggleView();if(e.code=='KeyT')setHide(!hideT);if(e.code=='Space'){inp.jump=true;if(!e.repeat)p.jb=.12}if(e.code=='KeyH')toggleGuide();
+addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(started&&!editing&&(e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Slash')){e.preventDefault();openChat();return}setMode(true);keys[e.code]=1;if(e.code=='KeyK'){wheel.classList.remove('on');skp.style.display=skp.style.display=='grid'?'none':'grid';if(skp.style.display=='grid'&&document.exitPointerLock)document.exitPointerLock()}if(e.code=='KeyE')brk();if(e.code=='KeyG')toggleWheel();if(e.code=='KeyQ')spawnTNT();if(e.code=='KeyV')toggleView();if(e.code=='KeyT')setHide(!hideT);if(e.code=='Space'){inp.jump=true;if(!e.repeat)p.jb=.12}if(e.code=='KeyH')toggleGuide();
  if(e.key>='1'&&e.key<='7'){sel=e.key-1;draw()}upd()});
 addEventListener('keyup',e=>{keys[e.code]=0;if(e.code=='Space')inp.jump=false;upd()});
 function upd(){if(jt!==null)return;inp.f=(keys.KeyW?1:0)-(keys.KeyS?1:0);inp.s=(keys.KeyD?1:0)-(keys.KeyA?1:0)}
@@ -777,7 +787,7 @@ function firstSolid(ax,ay,az,bx,by,bz){
 const guideEl=document.getElementById('guide');
 function toggleGuide(){const on=guideEl.style.display!='block';guideEl.style.display=on?'block':'none';if(on&&document.exitPointerLock)document.exitPointerLock()}
 bind(document.getElementById('guideBtn'),toggleGuide);bind(guideEl,toggleGuide);
-const KH={js:'WASD',fire:'LMB',jump:'Space',brk:'E',plc:'RMB',tnt:'Q',crouch:'C',skinBtn:'K',emoBtn:'G',viewBtn:'V',touchBtn:'T',guideBtn:'H'};
+const KH={chatBtn:'↵',js:'WASD',fire:'LMB',jump:'Space',brk:'E',plc:'RMB',tnt:'Q',crouch:'C',skinBtn:'K',emoBtn:'G',viewBtn:'V',touchBtn:'T',guideBtn:'H'};
 for(const k in KH){const e=document.getElementById(k);if(e)e.dataset.k=KH[k]}
 // usernames, name tags, kill feed
 const NA=['Nova','Blaze','Pixel','Shadow','Turbo','Echo','Viper','Frost','Rogue','Ghost','Comet','Ember','Zephyr','Onyx','Mango','Glitch','Rocket','Cobra','Titan','Pepper','Vortex','Sniper','Cosmo','Ninja','Dingo','Lunar','Kiwi','Bolt','Hawk','Rusty'];
@@ -794,11 +804,54 @@ const feedEl=document.getElementById('feed');
 function feed(t){const d=document.createElement('div');d.textContent=t;feedEl.appendChild(d);
  while(feedEl.children.length>5)feedEl.removeChild(feedEl.firstChild);setTimeout(()=>d.remove(),4500)}
 function tagsUpdate(){for(const z of zs){z.tag.position.set(z.x,z.y+2.1,z.z);z.tag.visible=z.hp>0&&Math.hypot(z.x-p.x,z.z-p.z)<40}}
+// ---- chat + filter ----
+// Word lists are ROT13-encoded so the file doesn't show them in plain text. SUB = blocked anywhere inside a word; WORD = blocked as a whole word (plus endings like -s/-ing).
+const CF=(()=>{
+ const r13=s=>s.replace(/[a-z]/g,c=>String.fromCharCode((c.charCodeAt(0)-84)%26+97));
+ const SUB='shpx shx shd cuhpx fuvg ovgpu ovngpu phag avttre avttn avtt snttbg sntbg juber fyhg onfgneq qvpxurnq nffubyr gjng obyybpx chffl cravf intvan cbea wvmm qvyqb cvff qbhpur ergneq zbgures pbpxfhpx oybjwbo unaqwbo znfgheong betnfz'.split(' ').map(r13),WORD='nff nefr nffrf qvpx qvpxf pbpx pbpxf phz gvg gvgf gvggl ubr ubrf snt sntf encr encrq encvfg frk frkl ahqr ahqrf obbo obbof obbol cevpx qnza penc xlf fgsh jgs spx sx fug ogpu nmm anmv xvxr fcvp puvax genaal qlxr arteb pbba jrgonpx tbbx ornare gubg zvys qhzonff wnpxnff fznegnff jnax jnaxre ubeal obare rerpgvba'.split(' ').map(r13);
+ // each run of a letter matches that letter repeated ("fuuuck"), keeping double letters double ("ass" never matches "as")
+ const pat=w=>w.replace(/(.)\1*/g,m=>m[0]+(m.length>1?'{'+m.length+',}':'+'));
+ const subRe=new RegExp(SUB.map(pat).join('|')),wordRe=new RegExp('^(?:'+WORD.map(pat).join('|')+')(?:s|es|ed|er|ers|ing|y|z)?$');
+ const LEET={'0':'o','1':'i','!':'i','3':'e','4':'a','@':'a','$':'s','5':'s','7':'t','+':'t','8':'b','9':'g','|':'l','€':'e'};
+ const norm=(t,alt)=>String(t).normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[01!34@$57+89|€]/g,c=>alt&&c==='1'?'l':LEET[c]).replace(/[^a-z]/g,'');
+ const bad=t=>{for(const a of[0,1]){const n=norm(t,a);if(n&&(subRe.test(n)||wordRe.test(n)))return true}return false};
+ const link=/(https?:\/\/|www\.|\b[\w-]+\.(com|net|org|gg|io|xyz|ly|co|me|tv|app|dev|link|us|uk)\b|discord)/i;
+ function clean(s){
+  s=String(s||'').replace(/[\u0000-\u001f\u007f​-‏‪-‮⁠-⁯﻿]/g,'').replace(/\s+/g,' ').trim().slice(0,120);
+  s=s.replace(/(?:\+?\d[\s().-]*){7,}/g,'[removed] ');
+  const tk=s.trim().split(' '),out=tk.slice();
+  // spaced-out letters: "f u c k" / "a s s"
+  for(let i=0;i<tk.length;){let j=i;while(j<tk.length&&tk[j].length<=2&&norm(tk[j]).length===1)j++;
+   if(j-i>=2&&bad(tk.slice(i,j).join('')))for(let k=i;k<j;k++)out[k]='*';i=j>i?j:i+1}
+  for(let i=0;i<tk.length;i++){if(out[i]!==tk[i])continue;
+   if(link.test(tk[i]))out[i]='[link]';else if(bad(tk[i]))out[i]='*'.repeat(Math.min(8,Math.max(3,tk[i].length)))}
+  return out.join(' ').trim()}
+ const nameBad=n=>bad(n)||String(n).split(/[\s_]+|\d+/).some(p=>p&&bad(p))||link.test(n);
+ return{clean,bad,nameBad}})();
+const chatLog=document.getElementById('chatlog'),chatIn=document.getElementById('chatin'),chatRate=new Map();let chatting=false,lastChat=0;
+function addChat(name,text,cls){const d=document.createElement('div');if(cls)d.classList.add(cls);
+ if(name){const b=document.createElement('b');b.textContent=name+': ';d.appendChild(b)}d.appendChild(document.createTextNode(text));
+ chatLog.appendChild(d);while(chatLog.children.length>12)chatLog.removeChild(chatLog.firstChild);
+ setTimeout(()=>d.classList.add('old'),15000)}
+function openChat(){if(!started||editing||chatting)return;chatting=true;document.body.classList.add('chatting');
+ for(const k in keys)keys[k]=0;inp.f=inp.s=0;inp.jump=false;firing=false;if(document.exitPointerLock)document.exitPointerLock();chatIn.focus()}
+function closeChat(){chatting=false;document.body.classList.remove('chatting');chatIn.value='';chatIn.blur()}
+function sendChat(){const raw=chatIn.value;closeChat();const t=CF.clean(raw);if(!t)return;
+ const now=performance.now();if(now-lastChat<1200){addChat('','Slow down a little!','sys');return}lastChat=now;
+ addChat(myName,t,'me');
+ if(online&&net)net.emit('chat',{t,n:myName});else addChat('','Only you can see this. Join an online server to chat with other players.','sys')}
+function onChat(m){if(m.sameTab)return;const d=m.data||{},now=performance.now();
+ const r=(chatRate.get(m.peer)||[]).filter(x=>now-x<5000);if(r.length>=5)return;r.push(now);chatRate.set(m.peer,r);// drop spam: max 5 messages per 5s per player
+ const t=CF.clean(typeof d.t==='string'?d.t:'');if(!t)return;
+ addChat(remotes.has(m.peer)?rname(m.peer):(cleanName(d.n)||'Player'),t)}
+chatIn.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();sendChat()}else if(e.key==='Escape'){e.preventDefault();closeChat()}});
+bind(document.getElementById('chatSend'),sendChat);
+bind(document.getElementById('chatBtn'),()=>chatting?closeChat():openChat());
 // ---- online multiplayer: peer-to-peer (no account) when opened as a plain HTML file; claude.ai live room when opened as an artifact. Each public server is a named room. ----
 const SRV=['Public 1','Public 2','Public 3','Public 4'];
 let online=false,myName='Player',srvName='',skinIdx=0,myPeer=null,lastAtk=null,lastAtkName='',roomApi=null,net=null,lastSend=0,lastSync=0;
 const remotes=new Map();
-const cleanName=t=>String(t||'').replace(/[^\w ]/g,'').trim().slice(0,16);
+const cleanName=t=>{const s=String(t||'').replace(/[^\w ]/g,'').trim().slice(0,16);return s&&CF.nameBad(s)?'':s};
 const rname=id=>{const r=remotes.get(id);return r?r.name:'Someone'};
 const unameEl=document.getElementById('uname'),srvsEl=document.getElementById('srvs'),mpNote=document.getElementById('mpnote');
 try{unameEl.value=localStorage.getItem('bc_name')||''}catch(e){}
@@ -836,8 +889,10 @@ async function joinServer(i){
  net.on('kill',m=>{if(m.sameTab)return;const d=m.data||{};feed(cleanName(d.kn)+' eliminated '+cleanName(d.v));if(d.k&&d.k===myPeer)kills++});
  net.on('need',m=>{if(!m.sameTab)setTimeout(sendSync,Math.random()*900)});
  net.on('sync',m=>{if(!m.sameTab)applySync(m.data)});
+ net.on('chat',onChat);
  net.emit('need',{});
- startGame();feed('Joined '+srvName+' as '+myName)}
+ startGame();feed('Joined '+srvName+' as '+myName);
+ addChat('','Chat is on: press Enter or 💬 to talk. A filter blocks bad words, links and phone numbers. Be kind!','sys')}
 function netUpdate(dt,now){
  if(!online||!net)return;
  const peers=net.peers();
@@ -886,7 +941,7 @@ async function mkTrystero(){
    const acts={},hs={},P=new Map();let myP={};
    const room=jr(cfg,name,cbs);
    const send=(t,d,o)=>{try{quiet(acts[t].send(d,o))}catch(e){}};
-   for(const t of['pres','hit','shot','tnt','blk','kill','need','sync']){
+   for(const t of['pres','hit','shot','tnt','blk','kill','need','sync','chat']){
     const a=room.makeAction(t);acts[t]=a;
     a.onMessage=(d,ctx)=>{const id=ctx&&ctx.peerId;if(!id)return;
      if(t==='pres'){P.set(id,{p:d&&typeof d==='object'?d:{},t:performance.now()});return}
