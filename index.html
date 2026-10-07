@@ -6,7 +6,7 @@
 :root{--bg:#87ceeb;--ui:rgba(0,0,0,.45);--fg:#fff;box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#87ceeb}}
 :root[data-theme="dark"]{--bg:#87ceeb}
-html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);touch-action:none;user-select:none;-webkit-user-select:none;font-family:system-ui,sans-serif}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);user-select:none;-webkit-user-select:none;font-family:system-ui,sans-serif}
 canvas{display:block;width:100%;height:100%}
 #hot{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);display:flex;justify-content:center;gap:6px}
 #hot div{width:38px;height:38px;border:3px solid #333;border-radius:4px;box-sizing:border-box}
@@ -29,8 +29,10 @@ canvas{display:block;width:100%;height:100%}
 .em{position:absolute;width:64px;height:64px;margin:-32px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:24px}
 .em small{font-size:10px}
 #viewBtn{top:calc(env(safe-area-inset-top,0px) + 168px)}
-#start{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;background:linear-gradient(#5aa9e6,#2b6e3f);overflow:auto}
-#start .c{max-width:420px;text-align:center;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
+body.playing,canvas{touch-action:none}
+#start{position:fixed;inset:0;z-index:50;display:flex;padding:calc(env(safe-area-inset-top,0px) + 20px) 16px calc(env(safe-area-inset-bottom,0px) + 28px);box-sizing:border-box;background:linear-gradient(#5aa9e6,#2b6e3f);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
+#guide,#keys,#skins{touch-action:pan-y;overscroll-behavior:contain}
+#start .c{margin:auto;max-width:420px;width:100%;text-align:center;color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.4)}
 #start h1{font-size:44px;margin:0 0 6px;letter-spacing:1px}#start p{margin:4px 0 14px;opacity:.95}
 #start ul{list-style:none;padding:12px 14px;margin:0 0 18px;background:rgba(0,0,0,.35);border-radius:12px;text-align:left;font-size:14px;line-height:1.7}
 #play{display:inline-block;padding:14px 40px;font-size:20px;font-weight:700;background:#f2c230;color:#222;border-radius:10px;text-shadow:none;cursor:pointer}
@@ -226,7 +228,8 @@ addEventListener('touchstart',e=>{if(editing)return;
   if(jt===null&&!hideT&&t.clientX>r.left-30&&t.clientX<r.right+30&&t.clientY>r.top-30&&t.clientY<r.bottom+30){jt=t.identifier;continue}
   if(lt===null){lt=t.identifier;lx=t.clientX;ly=t.clientY;lmoved=0;ltime=performance.now()}
  }},{passive:false});
-addEventListener('touchmove',e=>{if(editing)return;e.preventDefault();
+const inScroll=t=>!!(t&&t.closest&&t.closest('#start,#guide,#keys,#skins'));
+addEventListener('touchmove',e=>{if(editing)return;if(!started||inScroll(e.target))return;e.preventDefault();
  for(const t of e.changedTouches){
   if(t.identifier===jt){const r=js.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,sc=r.width/110;
    let dx=t.clientX-cx,dy=t.clientY-cy;const m=Math.hypot(dx,dy),mx=45*sc;if(m>mx){dx*=mx/m;dy*=mx/m}
@@ -442,6 +445,8 @@ const P1=makeChar(SK[0]),me=P1.g,flash=P1.flash;S.add(me);
 const EM=[['👋','Wave'],['💃','Dance'],['☝️','Point'],['🙌','Cheer'],['👏','Clap'],['💪','Flex'],['🙇','Bow'],['🤦','Facepalm'],['🕺','Hype']];
 const wheel=document.getElementById('wheel'),skp=document.getElementById('skins');
 const bind=(el,fn)=>{el.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();fn()},{passive:false});el.addEventListener('mousedown',e=>{e.stopPropagation();fn()})};
+// menu buttons: react to a real tap/click only, so scrolling the start menu over them doesn't press them
+const tapBind=(el,fn)=>el.addEventListener('click',e=>{e.stopPropagation();fn()});
 EM.forEach((e,i)=>{const d=document.createElement('div');d.className='em';const a=i/EM.length*6.283-1.5708;
  d.style.left=Math.cos(a)*105+'px';d.style.top=Math.sin(a)*105+'px';d.innerHTML=e[0]+'<small>'+e[1]+'</small>';
  bind(d,()=>{emote=i;wheel.classList.remove('on');if(i===8)startHype()});wheel.appendChild(d)});
@@ -660,7 +665,7 @@ function setEdit(v){editing=v;document.body.classList.toggle('edit',v);ed.style.
  else{try{localStorage.setItem('bc_layout',JSON.stringify({L:LAY,op:OP}))}catch(e){}}
  selEl(selId)}
 bind(document.getElementById('editBtn'),()=>setEdit(true));
-bind(document.getElementById('cust'),()=>setEdit(true));
+tapBind(document.getElementById('cust'),()=>setEdit(true));
 opS.value=OP*100;applyAll();
 let hideT=false;const tbtn=document.getElementById('touchBtn');
 try{hideT=localStorage.getItem('bc_hide')=='1'}catch(e){}
@@ -1048,7 +1053,7 @@ function startHype(fromAudio){if(!fromAudio)MUS.set(1);const o=MUS.origin();if(o
 function musicTick(){let v=emote===8&&!rd.on?1:0;
  for(const r of remotes.values())if(r.dance&&!VC.muted.has(r.id)){const d=Math.hypot(r.x-p.x,r.y-p.y,r.z-p.z);v=Math.max(v,d<6?.8:d>25?0:.8*(1-(d-6)/19))}
  MUS.set(v)}
-renderGuide();refreshHints();bind(document.getElementById('custKeys'),()=>toggleKeys(true));
+renderGuide();refreshHints();tapBind(document.getElementById('custKeys'),()=>toggleKeys(true));
 // ---- online multiplayer: peer-to-peer (no account) when opened as a plain HTML file; claude.ai live room when opened as an artifact. Each public server is a named room. ----
 const SRV=['Public 1','Public 2','Public 3','Public 4'];
 let online=false,myName='Player',srvName='',skinIdx=0,myPeer=null,lastAtk=null,lastAtkName='',roomApi=null,net=null,lastSend=0,lastSync=0;
@@ -1182,7 +1187,7 @@ async function mkTrystero(){
   chk();setInterval(chk,2000)}
  const draw=()=>{const c={};for(const pr of roomApi.peers()){const sv=pr.presence&&pr.presence.srv;if(sv)c[sv]=(c[sv]||0)+1}
   srvsEl.innerHTML='';SRV.forEach((n,i)=>{const d=document.createElement('div');d.className='srv';
-   d.innerHTML='<span>🌐 '+n+'</span><span>'+(c['fsb-pub-'+(i+1)]||0)+' online</span>';bind(d,()=>joinServer(i));srvsEl.appendChild(d)})};
+   d.innerHTML='<span>🌐 '+n+'</span><span>'+(c['fsb-pub-'+(i+1)]||0)+' online</span>';tapBind(d,()=>joinServer(i));srvsEl.appendChild(d)})};
  roomApi.onPeers(draw);draw();
 })();
 for(let i=0;i<BOTS;i++)spawnBot();
@@ -1201,8 +1206,8 @@ function loop(now){
  const r=ray();if(r){sel3.visible=true;sel3.position.set(r.hit[0]+.5,r.hit[1]+.5,r.hit[2]+.5)}else sel3.visible=false;
  R.render(S,C);requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
-function startGame(){started=true;last=performance.now();document.getElementById('start').style.display='none';
+function startGame(){started=true;document.body.classList.add('playing');last=performance.now();document.getElementById('start').style.display='none';
  if(pcMode)tryLock();
  setTimeout(()=>document.getElementById('msg').style.display='none',8000)}
-bind(document.getElementById('play'),()=>{getName();startGame()});
+tapBind(document.getElementById('play'),()=>{getName();startGame()});
 </script></body></html>
