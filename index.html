@@ -61,6 +61,17 @@ body.edit .b{display:flex!important}body.edit #js{display:block!important}body.e
 body.chatting #chatbar{display:flex}
 #chatin{flex:1;min-width:0;padding:10px 12px;border:0;border-radius:8px;font-size:16px;background:rgba(0,0,0,.72);color:#fff;outline:2px solid #f2c230;user-select:text;-webkit-user-select:text}
 #chatbar button{padding:0 16px;border:0;border-radius:8px;font-weight:700;background:#f2c230;color:#222;font-size:15px}
+#micBtn{right:66px;top:calc(env(safe-area-inset-top,0px) + 168px)}
+.tb.v1{box-shadow:inset 0 0 0 3px #7fd4ff}.tb.v2{box-shadow:inset 0 0 0 3px #5fe08a}.tb.tk{background:rgba(40,170,80,.85)}
+#talk{right:216px;bottom:calc(env(safe-area-inset-bottom,0px) + 216px);display:none;background:rgba(40,130,220,.7)}
+body.vptt #talk{display:flex}.hide-touch #talk{display:none!important}
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:56;display:none;background:rgba(0,0,0,.88);color:#fff;padding:14px 16px;border-radius:12px;font-size:13px;width:min(92vw,380px);max-height:86vh;overflow:auto;box-sizing:border-box}
+#keys h3{margin:0 0 4px;font-size:15px}#keys .kn{opacity:.8;margin-bottom:8px;min-height:2.6em}
+#keys .kr{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+#keys .kr i{opacity:.7;font-style:normal;padding:5px 10px}
+#keys button{font:700 13px system-ui;border:0;border-radius:6px;padding:6px 10px;min-width:84px;background:#fff;color:#222;cursor:pointer}
+#keys button.w{background:#f2c230}#keys .kf{display:flex;gap:10px;margin-top:10px}#keys .kf button{flex:1;padding:9px}#keys #kDone{background:#f2c230}
+.gk{display:inline-block;background:#f2c230;color:#222;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer}
 #msg{position:fixed;left:0;right:0;bottom:6px;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 2px #000;pointer-events:none}
 </style></head><body>
 <div id="hot"></div><div id="cross"></div>
@@ -70,20 +81,20 @@ body.chatting #chatbar{display:flex}
 <li>🖥️ <b>Desktop:</b> WASD, Space, click = shoot, right-click = place, E = break, 1-7 = blocks</li>
 <li>⌨️ <b>Mouse + keyboard on a tablet/phone:</b> they work alongside the touch controls. Tap 🖐 on the side (or press T) to hide the touch controls</li>
 <li>💣 <b>TNT:</b> button or Q. Explodes after 3s: 5 damage, knockback, 2s ragdoll</li>
-<li>👁 V = first/third person · 😀 G = emotes · K = skins</li><li>💬 <b>Chat:</b> Enter or 💬 on servers. A filter blocks bad words, links and phone numbers</li></ul>
+<li>👁 V = first/third person · 😀 G = emotes · K = skins</li><li>🎙 <b>Voice:</b> on servers, tap 🎙 (or N) for push-to-talk (hold B / Talk) or open mic. Off by default</li><li>⌨ <b>Change PC keys:</b> press P or use the link below</li><li>💬 <b>Chat:</b> Enter or 💬 on servers. A filter blocks bad words, links and phone numbers</li></ul>
 <div class="mp"><input id="uname" maxlength="16" placeholder="Username" autocomplete="off" spellcheck="false">
 <div style="font-size:13px;margin:8px 0 2px">🌐 Public servers</div><div id="srvs"></div><div id="mpnote">Looking for online servers...</div></div>
-<div id="play">▶ Play solo (70 bots)</div><div id="cust" style="margin-top:16px;font-size:14px;text-decoration:underline;cursor:pointer">🎛 Customize touch controls</div></div></div><div id="ed"><b>Customize controls</b><div style="opacity:.8;margin:2px 0 8px">Drag a control to move it. Tap one to select it, then resize.</div>
+<div id="play">▶ Play solo (70 bots)</div><div id="cust" style="margin-top:16px;font-size:14px;text-decoration:underline;cursor:pointer">🎛 Customize touch controls</div><div id="custKeys" style="margin-top:10px;font-size:14px;text-decoration:underline;cursor:pointer">⌨ Change PC keys</div></div></div><div id="ed"><b>Customize controls</b><div style="opacity:.8;margin:2px 0 8px">Drag a control to move it. Tap one to select it, then resize.</div>
 <div class="r"><span id="sellbl">Joystick</span><span>Size</span></div><input id="sz" type="range" min="50" max="170" value="100">
 <div class="r"><span>Opacity (all)</span></div><input id="op" type="range" min="20" max="100" value="100">
-<div class="r2"><button id="edReset">Reset</button><button id="edDone">Done</button></div></div><div id="hud"></div><div id="feed"></div><div class="tb" id="skinBtn">👕</div><div class="tb" id="emoBtn">😀</div><div class="tb" id="viewBtn">👁</div><div class="tb" id="editBtn">🎛</div><div class="tb" id="touchBtn">🖐</div><div id="skins"></div><div class="tb" id="guideBtn">⌨</div><div class="tb" id="chatBtn">💬</div><div id="chatlog"></div><div id="chatbar"><input id="chatin" maxlength="120" placeholder="Say something nice..." autocomplete="off" autocorrect="off" enterkeyhint="send"><button id="chatSend">Send</button></div>
+<div class="r2"><button id="edReset">Reset</button><button id="edDone">Done</button></div></div><div id="hud"></div><div id="feed"></div><div class="tb" id="skinBtn">👕</div><div class="tb" id="emoBtn">😀</div><div class="tb" id="viewBtn">👁</div><div class="tb" id="editBtn">🎛</div><div class="tb" id="touchBtn">🖐</div><div id="skins"></div><div class="tb" id="guideBtn">⌨</div><div class="tb" id="chatBtn">💬</div><div class="tb" id="micBtn">🔇</div><div id="keys"></div><div id="chatlog"></div><div id="chatbar"><input id="chatin" maxlength="120" placeholder="Say something nice..." autocomplete="off" autocorrect="off" enterkeyhint="send"><button id="chatSend">Send</button></div>
 <div id="guide"><h3>⌨ PC controls <span style="opacity:.6;font-weight:400">(tap to close)</span></h3>
 <div><b>W A S D</b> move</div><div><b>Space</b> jump (hold = bhop)</div><div><b>C / Ctrl</b> crouch</div>
 <div><b>Mouse</b> look</div><div><b>Left click</b> shoot</div><div><b>Right click</b> place block</div>
 <div><b>E</b> break block</div><div><b>Q</b> throw TNT</div><div><b>1-7 / wheel</b> pick block</div>
 <div><b>V</b> first/third person</div><div><b>G</b> emote wheel</div><div><b>K</b> skins</div>
 <div><b>T</b> hide touch controls</div>
-<div><b>Enter or /</b> chat</div><div><b>H</b> this guide</div><div><b>Esc</b> release mouse</div></div><div id="wheel"></div><div class="b" id="fire">Fire</div><div class="b" id="tnt">TNT</div><div class="b" id="crouch">Crouch</div><div class="b" id="jump">Jump</div><div class="b" id="brk">Break</div><div class="b" id="plc">Place</div>
+<div><b>Enter or /</b> chat</div><div><b>H</b> this guide</div><div><b>Esc</b> release mouse</div></div><div id="wheel"></div><div class="b" id="fire">Fire</div><div class="b" id="tnt">TNT</div><div class="b" id="crouch">Crouch</div><div class="b" id="jump">Jump</div><div class="b" id="brk">Break</div><div class="b" id="plc">Place</div><div class="b" id="talk">Talk</div>
 <div id="msg">70 armed bots fight everyone. 👁 = switch first/third person (V). Fire at them (aim for heads!) · Desktop: click=shoot, right-click=place, E=break</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -165,7 +176,7 @@ function step(dt){
  const fx=-Math.sin(p.yaw),fz=-Math.cos(p.yaw),rx=Math.cos(p.yaw),rz=-Math.sin(p.yaw);
  const wx=fx*inp.f+rx*inp.s,wz=fz*inp.f+rz*inp.s,wl=Math.hypot(wx,wz);
  HT=1.7;
- if(inp.crb||keys.KeyC||keys.ControlLeft||keys.ControlRight)p.crouch=true;else if(p.crouch&&!hit(p.x,p.y,p.z))p.crouch=false;
+ if(inp.crb||held.crouch)p.crouch=true;else if(p.crouch&&!hit(p.x,p.y,p.z))p.crouch=false;
  HT=p.crouch?.8:1.7;
  p.eye=(p.eye||1.6)+((p.crouch?.65:1.6)-(p.eye||1.6))*Math.min(1,dt*12);
  const sp=4.5*(p.crouch?.4:1)*Math.min(1,wl);
@@ -237,7 +248,7 @@ addEventListener('pointerdown',e=>setMode(e.pointerType==='mouse'),true);
 addEventListener('pointermove',e=>{if(e.pointerType==='mouse')setMode(true)},true);
 let lockFailed=false,mX=-1,mY=-1,lX=null,lY=null;
 function tryLock(){try{const r=R.domElement.requestPointerLock();if(r&&r.catch)r.catch(()=>{})}catch(e){}}
-const menuOpen=()=>wheel.classList.contains('on')||skp.style.display=='grid'||chatting;
+const menuOpen=()=>wheel.classList.contains('on')||skp.style.display=='grid'||chatting||keysEl.style.display=='block';
 function look(dx,dy){p.yaw-=dx*.0025;p.pitch=Math.max(-1.5,Math.min(1.5,p.pitch-dy*.0025))}
 document.addEventListener('pointerlockchange',()=>{const m=document.getElementById('msg');
  if(document.pointerLockElement)m.style.display='none';
@@ -252,15 +263,42 @@ function edgeLook(dt){
  if(fy<.025)p.pitch=Math.min(1.5,p.pitch+(.025-fy)/.025*1.5*dt);else if(fy>.975)p.pitch=Math.max(-1.5,p.pitch-(fy-.975)/.025*1.5*dt);
 }
 const act=()=>document.pointerLockElement||(pcMode&&started&&!menuOpen());
-// desktop controls
+// desktop controls (rebindable: open with the "Change keys" button, or P by default)
 const keys={};
-addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(started&&!editing&&(e.code==='Enter'||e.code==='NumpadEnter'||e.code==='Slash')){e.preventDefault();openChat();return}setMode(true);keys[e.code]=1;if(e.code=='KeyK'){wheel.classList.remove('on');skp.style.display=skp.style.display=='grid'?'none':'grid';if(skp.style.display=='grid'&&document.exitPointerLock)document.exitPointerLock()}if(e.code=='KeyE')brk();if(e.code=='KeyG')toggleWheel();if(e.code=='KeyQ')spawnTNT();if(e.code=='KeyV')toggleView();if(e.code=='KeyT')setHide(!hideT);if(e.code=='Space'){inp.jump=true;if(!e.repeat)p.jb=.12}if(e.code=='KeyH')toggleGuide();
- if(e.key>='1'&&e.key<='7'){sel=e.key-1;draw()}upd()});
-addEventListener('keyup',e=>{keys[e.code]=0;if(e.code=='Space')inp.jump=false;upd()});
-function upd(){if(jt!==null)return;inp.f=(keys.KeyW?1:0)-(keys.KeyS?1:0);inp.s=(keys.KeyD?1:0)-(keys.KeyA?1:0)}
+const ACT=[['fwd','Move forward','KeyW'],['back','Move back','KeyS'],['left','Move left','KeyA'],['right','Move right','KeyD'],['jump','Jump (hold = bhop)','Space'],['crouch','Crouch','KeyC'],
+ ['fire','Shoot','Mouse0'],['place','Place block','Mouse2'],['break','Break block','KeyE'],['tnt','Throw TNT','KeyQ'],['view','First / third person','KeyV'],['emote','Emote wheel','KeyG'],
+ ['skins','Skins','KeyK'],['chat','Open chat','Enter'],['ptt','Push to talk','KeyB'],['voice','Voice chat on/off','KeyN'],['touch','Hide touch controls','KeyT'],['guide','Controls guide','KeyH'],['keys','Change keys','KeyP']];
+const DEFB=Object.fromEntries(ACT.map(a=>[a[0],a[2]]));let BIND={...DEFB};
+try{const s=JSON.parse(localStorage.getItem('bc_keys')||'null');if(s&&typeof s==='object')for(const k in s)if(k in DEFB&&typeof s[k]==='string')BIND[k]=s[k]}catch(e){}
+const held={};let rebind=null;
+const actOf=code=>{for(const k in BIND)if(BIND[k]===code)return k;return null};
+function keyLabel(c){if(!c)return'none';const M={Mouse0:'LMB',Mouse1:'MMB',Mouse2:'RMB',Mouse3:'Mouse 4',Mouse4:'Mouse 5',ShiftLeft:'L-Shift',ShiftRight:'R-Shift',ControlLeft:'L-Ctrl',ControlRight:'R-Ctrl',AltLeft:'L-Alt',AltRight:'R-Alt',MetaLeft:'Cmd',MetaRight:'Cmd',
+ ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',Backspace:'Bksp',CapsLock:'Caps',Slash:'/',Backslash:'\\',Period:'.',Comma:',',Semicolon:';',Quote:"'",BracketLeft:'[',BracketRight:']',Minus:'-',Equal:'=',Backquote:'`',NumpadEnter:'Num Enter'};
+ return M[c]||c.replace(/^Key/,'').replace(/^Digit/,'').replace(/^Numpad/,'Num ')}
+function press(a,rep){
+ if(a==='fwd'||a==='back'||a==='left'||a==='right'){held[a]=1;upd();return}
+ if(a==='jump'){inp.jump=true;if(!rep)p.jb=.12;return}
+ if(a==='crouch'){held.crouch=1;return}
+ if(a==='ptt'){VC.ptt=true;return}
+ if(rep)return;
+ if(a==='fire'){if(act())firing=true}else if(a==='place'){if(act())plc()}
+ else if(a==='break')brk();else if(a==='tnt')spawnTNT();else if(a==='view')toggleView();else if(a==='emote')toggleWheel();
+ else if(a==='skins'){wheel.classList.remove('on');skp.style.display=skp.style.display=='grid'?'none':'grid';if(skp.style.display=='grid'&&document.exitPointerLock)document.exitPointerLock()}
+ else if(a==='chat'){if(started&&!editing)openChat()}else if(a==='voice')cycleVoice();
+ else if(a==='touch')setHide(!hideT);else if(a==='guide')toggleGuide();else if(a==='keys')toggleKeys()}
+function release(a){if(a==='fwd'||a==='back'||a==='left'||a==='right'){held[a]=0;upd()}else if(a==='jump')inp.jump=false;else if(a==='crouch')held.crouch=0;else if(a==='fire')firing=false;else if(a==='ptt')VC.ptt=false}
+function releaseAll(){for(const k in held)held[k]=0;for(const k in keys)keys[k]=0;inp.jump=false;firing=false;if(typeof VC!=='undefined')VC.ptt=false;upd()}
+addEventListener('keydown',e=>{if(e.target&&e.target.tagName==='INPUT')return;if(rebind)return;setMode(true);keys[e.code]=1;
+ const a=actOf(e.code);if(a){if(a==='chat'||a==='jump'||a==='keys')e.preventDefault();press(a,e.repeat)}
+ else if(e.code==='Slash'&&started&&!editing){e.preventDefault();openChat()}
+ if(/^Digit[1-7]$/.test(e.code)){sel=+e.code[5]-1;draw()}});
+addEventListener('keyup',e=>{keys[e.code]=0;const a=actOf(e.code);if(a)release(a)});
+addEventListener('blur',releaseAll);
+function upd(){if(jt!==null)return;inp.f=(held.fwd?1:0)-(held.back?1:0);inp.s=(held.right?1:0)-(held.left?1:0)}
 R.domElement.addEventListener('click',()=>{if(pcMode&&started&&!menuOpen()&&!document.pointerLockElement)tryLock()});
 addEventListener('mousemove',e=>{if(document.pointerLockElement){look(e.movementX,e.movementY);return}mX=e.clientX;mY=e.clientY;if(pcMode&&started&&!menuOpen()&&lX!==null)look(e.clientX-lX,e.clientY-lY);lX=e.clientX;lY=e.clientY});
-addEventListener('mousedown',e=>{md=true;if(act()){e.button==2?plc():firing=true}});addEventListener('mouseup',()=>{md=false;firing=false});
+addEventListener('mousedown',e=>{md=true;if(rebind)return;const a=actOf('Mouse'+e.button);if(a&&act())press(a)});
+addEventListener('mouseup',e=>{md=false;const a=actOf('Mouse'+e.button);if(a)release(a)});
 addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('wheel',e=>{sel=(sel+(e.deltaY>0?1:6))%7;draw()});
 // guns & zombies
@@ -576,7 +614,7 @@ function spawnBot(){let x,z,k=0;do{x=2+Math.random()*(N-4);z=2+Math.random()*(N-
  let y=H-1;while(y>0&&!get(x|0,y,z|0))y--;mkZ(x,y+1.01,z)}
 // layout customizer
 let editing=false,selId='js',drag=null,LAY={},OP=1;
-const CZ={js:'Joystick',fire:'Fire',jump:'Jump',brk:'Break',plc:'Place',tnt:'TNT',crouch:'Crouch'};
+const CZ={js:'Joystick',fire:'Fire',jump:'Jump',brk:'Break',plc:'Place',tnt:'TNT',crouch:'Crouch',talk:'Talk'};
 try{const sv=JSON.parse(localStorage.getItem('bc_layout')||'null');if(sv){LAY=sv.L||{};OP=sv.op||1}}catch(e){}
 const ed=document.getElementById('ed'),szS=document.getElementById('sz'),opS=document.getElementById('op'),sellbl=document.getElementById('sellbl');
 function applyL(id){const l=LAY[id],el=document.getElementById(id);
@@ -787,12 +825,11 @@ function firstSolid(ax,ay,az,bx,by,bz){
 const guideEl=document.getElementById('guide');
 function toggleGuide(){const on=guideEl.style.display!='block';guideEl.style.display=on?'block':'none';if(on&&document.exitPointerLock)document.exitPointerLock()}
 bind(document.getElementById('guideBtn'),toggleGuide);bind(guideEl,toggleGuide);
-const KH={chatBtn:'↵',js:'WASD',fire:'LMB',jump:'Space',brk:'E',plc:'RMB',tnt:'Q',crouch:'C',skinBtn:'K',emoBtn:'G',viewBtn:'V',touchBtn:'T',guideBtn:'H'};
-for(const k in KH){const e=document.getElementById(k);if(e)e.dataset.k=KH[k]}
+/* key hints on buttons + PC guide are generated from the current key bindings */
 // usernames, name tags, kill feed
-const NA=['Nova','Blaze','Pixel','Shadow','Turbo','Echo','Viper','Frost','Rogue','Ghost','Comet','Ember','Zephyr','Onyx','Mango','Glitch','Rocket','Cobra','Titan','Pepper','Vortex','Sniper','Cosmo','Ninja','Dingo','Lunar','Kiwi','Bolt','Hawk','Rusty'];
-function botName(){const a=NA[Math.random()*NA.length|0],m=Math.random();
- return m<.35?a+(10+Math.random()*89|0):m<.6?'xX'+a+'Xx':m<.8?a+'_'+NA[Math.random()*NA.length|0]:a+'_'+(Math.random()*999|0)}
+const NA=['novari','kaizen','veyro','zaylen','avryn','kairo','elvyn','ryven','auren','veylin','nori','riven','zoren','kyro','arden','renzo','zevyn','averyx','kovan','rylo','noxen','elian','vaelo','zayro','orionx','kaelo','revyn','nyro','axen','veyon','afterhours','fadedframes','lateagain','lostinmono','softstatic','nightarchive','slowmornings','quietblur','afterglow','midnightjpg','lowkeyy','offhours','daydreaming','fadedfilm','moonarchive','cloudyfiles','polaroidboy','softfocus','sundayblur','hiddenframe','grainy','oldcamera','nightdrive','bluehour','sleepylens','fadedaway','hazyview','duskfiles','lostframes','aftersunset','vexed','ryze','klyro','zyven','revix','kaizo','nyxen','veyx','rynox','axion','zairo','kryo','vyren','xevin','raxen','zyro','vexin','nyrox','rivenx','aevix','kyven','zaynx','ryvox','veynx','xairo','kaivex','novex','ziven','ravix','barelyawake','mybad','whoops','idkbro','imtired','probablyme','notagain','waitwhat','myfault','bruh','lowbattery','noidea','holdon','trustme','mbbro','nvm','somehow','oops','whatever','honestly','literallyme','kinda','maybe','idkanymore','fairenough','browhat','mybadlol','notme','real','vyn','ryo','kai','zay','ren','lux','rio','noa','zen','ari','neo','rex','leo','axo','niko','zeno','kova','ryn','xeno','zio','ryu','navi','lio','aiko','zuri','nyx','vex','kyo','sora','justvyn','itskairo','heyryo','realkaizen','onlynori','thisisren','itszay','notkairo','whosrylo','simplyvex','justnyx','heyvyn','itsriven','onlyryo','realzoren','bykairo','fromnori','callmerylo','itskyro','justren','madebyvyn','heykaelo','onlyzay','itsorion','realryven','justnox','byrylo','thisisvex','heykovan','onlynyro','nox','noctis','deadpixel','afterdark','nightfall','ghostmode','lostsignal','blackframe','coldcase','darkroom','nowhere','fadedout','zerohour','shadowed','offgrid','unknownx','silentmode','deadzone','nightshift','blackout','itsjaden','heyjules','itsmilo','justalex','heyriley','itsnoah','justeli','heylogan','itscam','justryan','heyjay','itsnico','justsam','heymax','itsleo','justkai','heyjordan','itsdrew','justcasey','heytaylor'];
+// pick a name no live bot is using (falls back to a random one if all are taken)
+function botName(){const used=new Set(zs.map(z=>z.name)),free=NA.filter(n=>!used.has(n));const L=free.length?free:NA;return L[Math.random()*L.length|0]}
 function makeTag(text,col){
  const cv=document.createElement('canvas');cv.width=256;cv.height=64;const x=cv.getContext('2d');
  x.font='bold 28px system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';
@@ -834,19 +871,108 @@ function addChat(name,text,cls){const d=document.createElement('div');if(cls)d.c
  chatLog.appendChild(d);while(chatLog.children.length>12)chatLog.removeChild(chatLog.firstChild);
  setTimeout(()=>d.classList.add('old'),15000)}
 function openChat(){if(!started||editing||chatting)return;chatting=true;document.body.classList.add('chatting');
- for(const k in keys)keys[k]=0;inp.f=inp.s=0;inp.jump=false;firing=false;if(document.exitPointerLock)document.exitPointerLock();chatIn.focus()}
+ releaseAll();inp.f=inp.s=0;if(document.exitPointerLock)document.exitPointerLock();chatIn.focus()}
 function closeChat(){chatting=false;document.body.classList.remove('chatting');chatIn.value='';chatIn.blur()}
-function sendChat(){const raw=chatIn.value;closeChat();const t=CF.clean(raw);if(!t)return;
+function sendChat(){const raw=chatIn.value;closeChat();if(muteCmd(raw))return;const t=CF.clean(raw);if(!t)return;
  const now=performance.now();if(now-lastChat<1200){addChat('','Slow down a little!','sys');return}lastChat=now;
  addChat(myName,t,'me');
  if(online&&net)net.emit('chat',{t,n:myName});else addChat('','Only you can see this. Join an online server to chat with other players.','sys')}
-function onChat(m){if(m.sameTab)return;const d=m.data||{},now=performance.now();
+function onChat(m){if(m.sameTab||VC.muted.has(m.peer))return;const d=m.data||{},now=performance.now();
  const r=(chatRate.get(m.peer)||[]).filter(x=>now-x<5000);if(r.length>=5)return;r.push(now);chatRate.set(m.peer,r);// drop spam: max 5 messages per 5s per player
  const t=CF.clean(typeof d.t==='string'?d.t:'');if(!t)return;
  addChat(remotes.has(m.peer)?rname(m.peer):(cleanName(d.n)||'Player'),t)}
 chatIn.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();sendChat()}else if(e.key==='Escape'){e.preventDefault();closeChat()}});
 bind(document.getElementById('chatSend'),sendChat);
 bind(document.getElementById('chatBtn'),()=>chatting?closeChat():openChat());
+// ---- key changing panel + generated PC guide ----
+const keysEl=document.getElementById('keys');
+const escH=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function saveKeys(){try{localStorage.setItem('bc_keys',JSON.stringify(BIND))}catch(e){}}
+function renderKeys(note){
+ keysEl.innerHTML='<h3>⌨ Change keys</h3><div class="kn">'+escH(note||'Click an action, then press a key or click a mouse button. Esc cancels.')+'</div>'+
+  ACT.map(a=>'<div class="kr"><span>'+escH(a[1])+'</span><button data-a="'+a[0]+'"'+(rebind===a[0]?' class="w"':'')+'>'+(rebind===a[0]?'Press a key...':escH(keyLabel(BIND[a[0]])))+'</button></div>').join('')+
+  '<div class="kr"><span>Pick block</span><i>1-7 / wheel</i></div><div class="kf"><button id="kReset">Reset to default</button><button id="kDone">Done</button></div>';
+ keysEl.querySelectorAll('button[data-a]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();rebind=rebind===b.dataset.a?null:b.dataset.a;renderKeys()}));
+ document.getElementById('kReset').onclick=e=>{e.stopPropagation();rebind=null;BIND={...DEFB};saveKeys();keysChanged('Keys reset to default.')};
+ document.getElementById('kDone').onclick=e=>{e.stopPropagation();toggleKeys(false)}}
+function keysChanged(note){releaseAll();renderKeys(note);renderGuide();refreshHints()}
+function assignKey(code){
+ const a=rebind;if(!a)return;
+ if(/^Digit[1-7]$/.test(code)){rebind=null;renderKeys('1-7 pick blocks, so they can\'t be used. Try another key.');return}
+ const other=actOf(code);if(other&&other!==a)BIND[other]=BIND[a];// swap so no two actions share a key
+ BIND[a]=code;rebind=null;saveKeys();
+ keysChanged(other&&other!==a?'Swapped: '+ACT.find(x=>x[0]===other)[1]+' is now '+keyLabel(BIND[other])+'.':'Saved.')}
+addEventListener('keydown',e=>{if(!rebind)return;e.preventDefault();e.stopImmediatePropagation();
+ if(e.code==='Escape'){rebind=null;renderKeys();return}assignKey(e.code)},true);
+addEventListener('mousedown',e=>{if(!rebind)return;
+ if(e.target&&e.target.closest&&e.target.closest('#keys button')){return}// clicking panel buttons switches/cancels instead of binding
+ e.preventDefault();e.stopImmediatePropagation();assignKey('Mouse'+e.button)},true);
+function toggleKeys(v){const on=v===undefined?keysEl.style.display!='block':v;keysEl.style.display=on?'block':'none';rebind=null;
+ if(on){guideEl.style.display='none';renderKeys();if(document.exitPointerLock)document.exitPointerLock()}releaseAll()}
+function renderGuide(){
+ guideEl.innerHTML='<h3>⌨ PC controls <span style="opacity:.6;font-weight:400">(tap to close)</span></h3>'+
+  '<div><b>'+escH(keyLabel(BIND.fwd)+keyLabel(BIND.left)+keyLabel(BIND.back)+keyLabel(BIND.right))+'</b> move</div>'+
+  ACT.filter(a=>!['fwd','back','left','right'].includes(a[0])).map(a=>'<div><b>'+escH(keyLabel(BIND[a[0]]))+'</b> '+escH(a[1].toLowerCase())+'</div>').join('')+
+  '<div><b>Mouse</b> look</div><div><b>1-7 / wheel</b> pick block</div><div><b>/</b> chat</div><div><b>Esc</b> release mouse</div>'+
+  '<div style="margin-top:8px"><span class="gk" id="gKeys">⌨ Change keys</span></div>';
+ bind(document.getElementById('gKeys'),()=>toggleKeys(true))}
+function refreshHints(){const m={fire:'fire',jump:'jump',brk:'break',plc:'place',tnt:'tnt',crouch:'crouch',skinBtn:'skins',emoBtn:'emote',viewBtn:'view',touchBtn:'touch',guideBtn:'guide',chatBtn:'chat',micBtn:'voice',talk:'ptt'};
+ for(const id in m){const e=document.getElementById(id);if(e)e.dataset.k=keyLabel(BIND[m[id]])}
+ const j=document.getElementById('js');if(j)j.dataset.k=[BIND.fwd,BIND.left,BIND.back,BIND.right].map(keyLabel).join('')}
+// ---- voice chat: peer-to-peer audio (standalone file), off by default, volume fades with distance ----
+const VC={mode:0,stream:null,ctx:null,an:null,buf:null,ptt:false,talking:false,lvl:0,muted:new Set(),rs:new Map()};
+const micBtn=document.getElementById('micBtn');
+function vcUI(){micBtn.classList.toggle('v1',VC.mode===1);micBtn.classList.toggle('v2',VC.mode===2);micBtn.classList.toggle('tk',VC.talking);
+ micBtn.textContent=VC.mode?'🎙':'🔇';document.body.classList.toggle('vptt',VC.mode===1&&!!VC.stream)}
+function ensureCtx(){if(!VC.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)try{VC.ctx=new AC()}catch(e){}}
+ if(VC.ctx&&VC.ctx.state==='suspended')VC.ctx.resume().catch(()=>{});return VC.ctx}
+function cycleVoice(){setVoice((VC.mode+1)%3)}
+function vcStopMic(){if(VC.stream){try{net&&net.voice&&net.voice.stop(VC.stream)}catch(e){}VC.stream.getTracks().forEach(t=>t.stop());VC.stream=null;VC.an=null}VC.talking=false}
+async function setVoice(m){
+ if(m>0&&!(online&&net&&net.voice)){addChat('',online?'Voice chat only works in the standalone game file, not inside Claude.':'Join an online server to use voice chat.','sys');m=0}
+ const prev=VC.mode;VC.mode=m;
+ if(m===0){vcStopMic();for(const id of VC.rs.keys())vcDetach(id);vcUI();if(prev)addChat('','Voice chat off. You can\'t hear anyone or be heard.','sys');return}
+ ensureCtx();
+ if(!VC.stream&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+  try{const s=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false});
+   if(VC.mode===0){s.getTracks().forEach(t=>t.stop());return}
+   VC.stream=s;s.getAudioTracks().forEach(t=>t.enabled=false);
+   if(VC.ctx){const src=VC.ctx.createMediaStreamSource(s);VC.an=VC.ctx.createAnalyser();VC.an.fftSize=512;VC.buf=new Uint8Array(512);src.connect(VC.an)}
+   net.voice.start(s)}catch(e){addChat('','Microphone is blocked, so you can listen but not talk. Allow the mic for this page in your browser to talk.','sys')}}
+ else if(!VC.stream)addChat('','This browser has no microphone access. You can still listen.','sys');
+ for(const id of VC.rs.keys())vcAttach(id);
+ if(prev===0||m!==prev)addChat('',m===1?'Voice on (push-to-talk): hold '+keyLabel(BIND.ptt)+' or the Talk button to speak. Players near you hear you. /mute name mutes someone.':'Voice on (open mic): players near you hear you whenever you talk. Tap 🎙 again to turn voice off.','sys');
+ vcUI()}
+function vcOnStream(stream,id){if(VC.rs.has(id))vcDetach(id);VC.rs.set(id,{stream});if(VC.mode>0)vcAttach(id)}
+function vcAttach(id){const v=VC.rs.get(id);if(!v||v.au)return;
+ v.au=new Audio();v.au.autoplay=true;v.au.srcObject=v.stream;
+ const ctx=ensureCtx();
+ if(ctx){try{v.au.muted=true;v.src=ctx.createMediaStreamSource(v.stream);v.gain=ctx.createGain();v.gain.gain.value=0;v.src.connect(v.gain);v.gain.connect(ctx.destination)}catch(e){v.gain=null;v.au.muted=false}}
+ v.au.play().catch(()=>{})}
+function vcDetach(id){const v=VC.rs.get(id);if(!v)return;try{v.src&&v.src.disconnect();v.gain&&v.gain.disconnect()}catch(e){}if(v.au){v.au.pause();v.au.srcObject=null}v.au=v.src=v.gain=null}
+function vcDrop(id){vcDetach(id);VC.rs.delete(id);VC.muted.delete(id)}
+function vcTick(){
+ if(VC.stream){const on=VC.mode===2||(VC.mode===1&&VC.ptt);for(const t of VC.stream.getAudioTracks())if(t.enabled!==on)t.enabled=on;
+  let lv=0;if(on&&VC.an){VC.an.getByteTimeDomainData(VC.buf);let s=0;for(let i=0;i<VC.buf.length;i++){const d=(VC.buf[i]-128)/128;s+=d*d}lv=Math.sqrt(s/VC.buf.length)}
+  VC.lvl=VC.lvl*.8+lv*.2;const tk=on&&VC.lvl>.012;if(tk!==VC.talking){VC.talking=tk;vcUI()}}
+ else if(VC.talking){VC.talking=false;vcUI()}
+ for(const[id,v]of VC.rs){const r=remotes.get(id);let vol=0;
+  if(r&&VC.mode>0&&!VC.muted.has(id)){const d=Math.hypot(r.x-p.x,r.y-p.y,r.z-p.z);vol=d<8?1:d>45?0:1-(d-8)/37}
+  if(v.gain)v.gain.gain.setTargetAtTime(vol,VC.ctx.currentTime,.08);else if(v.au)v.au.volume=vol}}
+const spkTex=(()=>{const cv=document.createElement('canvas');cv.width=cv.height=64;const x=cv.getContext('2d');x.fillStyle='rgba(40,170,80,.9)';x.beginPath();x.arc(32,32,30,0,7);x.fill();
+ x.font='34px system-ui,sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('🔊',32,35);const t=new THREE.CanvasTexture(cv);return t})();
+function makeSpk(){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:spkTex,transparent:true}));s.scale.set(.5,.5,1);s.visible=false;s.renderOrder=11;return s}
+function muteCmd(raw){const m=raw.trim().match(/^\/(mute|unmute)\s*(.*)$/i);if(!m)return false;
+ const mute=m[1].toLowerCase()==='mute',q=m[2].trim().toLowerCase();
+ if(!q){const l=[...VC.muted].map(rname);addChat('',l.length?'Muted: '+l.join(', '):'Nobody is muted. Type /mute name to mute a player (voice and chat).','sys');return true}
+ let hit=[...remotes.values()].filter(r=>r.name.toLowerCase()===q);if(!hit.length)hit=[...remotes.values()].filter(r=>r.name.toLowerCase().startsWith(q));
+ if(!hit.length){addChat('','No player here named "'+CF.clean(m[2])+'".','sys');return true}
+ for(const r of hit)mute?VC.muted.add(r.id):VC.muted.delete(r.id);
+ addChat('',(mute?'Muted ':'Unmuted ')+hit.map(r=>r.name).join(', ')+' (voice and chat).','sys');return true}
+bind(micBtn,cycleVoice);
+btn('talk',()=>{VC.ptt=true},()=>{VC.ptt=false});
+vcUI();
+renderGuide();refreshHints();bind(document.getElementById('custKeys'),()=>toggleKeys(true));
 // ---- online multiplayer: peer-to-peer (no account) when opened as a plain HTML file; claude.ai live room when opened as an artifact. Each public server is a named room. ----
 const SRV=['Public 1','Public 2','Public 3','Public 4'];
 let online=false,myName='Player',srvName='',skinIdx=0,myPeer=null,lastAtk=null,lastAtkName='',roomApi=null,net=null,lastSend=0,lastSync=0;
@@ -890,6 +1016,7 @@ async function joinServer(i){
  net.on('need',m=>{if(!m.sameTab)setTimeout(sendSync,Math.random()*900)});
  net.on('sync',m=>{if(!m.sameTab)applySync(m.data)});
  net.on('chat',onChat);
+ if(net.voice)net.voice.onStream(vcOnStream);
  net.emit('need',{});
  startGame();feed('Joined '+srvName+' as '+myName);
  addChat('','Chat is on: press Enter or 💬 to talk. A filter blocks bad words, links and phone numbers. Be kind!','sys')}
@@ -898,14 +1025,15 @@ function netUpdate(dt,now){
  const peers=net.peers();
  for(const pr of peers)if(pr.isMe&&pr.sameTab)myPeer=pr.peer;
  if(now-lastSend>80){lastSend=now;
-  net.presence({x:+p.x.toFixed(2),y:+p.y.toFixed(2),z:+p.z.toFixed(2),yw:+p.yaw.toFixed(2),pt:+p.pitch.toFixed(2),cr:p.crouch?1:0,em:emote,sk:skinIdx,n:myName,rg:rd.on?1:0})}
+  net.presence({x:+p.x.toFixed(2),y:+p.y.toFixed(2),z:+p.z.toFixed(2),yw:+p.yaw.toFixed(2),pt:+p.pitch.toFixed(2),cr:p.crouch?1:0,em:emote,sk:skinIdx,n:myName,rg:rd.on?1:0,vc:VC.mode?1:0,tk:VC.talking?1:0})}
  const seen=new Set();
  for(const pr of peers){
   if(pr.sameTab)continue;const q=pr.presence||{};if(typeof q.n!=='string'||!isFinite(q.x)||!isFinite(q.y)||!isFinite(q.z))continue;
   seen.add(pr.peer);let r=remotes.get(pr.peer);
   if(!r){const nm=cleanName(q.n)||'Player',c=makeChar(SK[(q.sk|0)%SK.length]);c.g.rotation.order='YXZ';S.add(c.g);
    const tag=makeTag(nm,'#7fd4ff');S.add(tag);
-   r={id:pr.peer,c,tag,name:nm,sk:q.sk|0,x:q.x,y:q.y,z:q.z,yaw:+q.yw||0,pt:0,t:0,mvs:0};remotes.set(pr.peer,r);feed(nm+' joined')}
+   const spk=makeSpk();S.add(spk);
+   r={id:pr.peer,c,tag,spk,name:nm,sk:q.sk|0,x:q.x,y:q.y,z:q.z,yaw:+q.yw||0,pt:0,t:0,mvs:0};remotes.set(pr.peer,r);feed(nm+' joined')}
   const k=Math.min(1,dt*14),ox=r.x,oz=r.z;
   r.x+=(q.x-r.x)*k;r.y+=(q.y-r.y)*k;r.z+=(q.z-r.z)*k;r.yaw+=angd(+q.yw||0,r.yaw)*k;r.pt+=((+q.pt||0)-r.pt)*k;
   if((q.sk|0)!==r.sk){r.sk=q.sk|0;setSkin(r.c,SK[r.sk%SK.length])}
@@ -914,8 +1042,10 @@ function netUpdate(dt,now){
   r.c.g.position.set(r.x,r.y,r.z);r.c.g.rotation.set(q.rg?-1.3:0,r.yaw,0);
   animChar(r.c,q.rg?0:r.mvs,r.t,q.em>=0?q.em|0:-1,r.pt);
   r.tag.position.set(r.x,r.y+2.1,r.z);r.tag.visible=Math.hypot(r.x-p.x,r.z-p.z)<60;
+  r.spk.position.set(r.x,r.y+2.55,r.z);r.spk.visible=!!q.tk&&VC.mode>0&&!VC.muted.has(pr.peer)&&r.tag.visible;
  }
- for(const[id,r] of remotes)if(!seen.has(id)){S.remove(r.c.g);S.remove(r.tag);remotes.delete(id);feed(r.name+' left')}
+ for(const[id,r] of remotes)if(!seen.has(id)){S.remove(r.c.g);S.remove(r.tag);S.remove(r.spk);vcDrop(id);remotes.delete(id);feed(r.name+' left')}
+ vcTick();
 }
 // Serverless online play: WebRTC peer-to-peer via Trystero (public relays do matchmaking only). No account needed.
 async function mkTrystero(){
@@ -946,11 +1076,14 @@ async function mkTrystero(){
     a.onMessage=(d,ctx)=>{const id=ctx&&ctx.peerId;if(!id)return;
      if(t==='pres'){P.set(id,{p:d&&typeof d==='object'?d:{},t:performance.now()});return}
      (hs[t]||[]).forEach(h=>{try{h({data:d,peer:id,isMe:false,sameTab:false})}catch(e){}})}}
-   room.onPeerLeave=id=>P.delete(id);room.onPeerJoin=id=>send('pres',myP,{target:id});
+   let vs=null;const sls=[];
+   room.onPeerStream=(st,id)=>sls.forEach(f=>{try{f(st,id)}catch(e){}});
+   room.onPeerLeave=id=>P.delete(id);room.onPeerJoin=id=>{send('pres',myP,{target:id});if(vs)try{room.addStream(vs,{target:id})}catch(e){}};
    return{
     emit:(t,d)=>{if(acts[t])send(t,d);return Promise.resolve()},
     on:(t,h)=>{(hs[t]=hs[t]||[]).push(h)},
     presence:o=>{myP={...myP,...o};send('pres',myP);return Promise.resolve()},
+    voice:{start(st){vs=st;try{room.addStream(st)}catch(e){}},stop(st){try{room.removeStream(st)}catch(e){}if(vs===st)vs=null},onStream:f=>sls.push(f)},
     peers:()=>{const now=performance.now(),a=[{peer:sid,isMe:true,sameTab:true,presence:myP}];
      for(const[id,v]of P)if(now-v.t<5000)a.push({peer:id,isMe:false,sameTab:false,presence:v.p});return a},
     connected:()=>true}}};
