@@ -69,7 +69,7 @@ body.chatting #chatbar{display:flex}
 <ul><li>📱 <b>Touch:</b> left stick = move, drag right side = look, Fire / Jump / Break / Place buttons</li>
 <li>🖥️ <b>Desktop:</b> WASD, Space, click = shoot, right-click = place, E = break, 1-7 = blocks</li>
 <li>⌨️ <b>Mouse + keyboard on a tablet/phone:</b> they work alongside the touch controls. Tap 🖐 on the side (or press T) to hide the touch controls</li>
-<li>💣 <b>TNT:</b> button or Q. Explodes after 3s: 50 damage, knockback, 2s ragdoll</li>
+<li>💣 <b>TNT:</b> button or Q. Explodes after 3s: 5 damage, knockback, 2s ragdoll</li>
 <li>👁 V = first/third person · 😀 G = emotes · K = skins</li><li>💬 <b>Chat:</b> Enter or 💬 on servers. A filter blocks bad words, links and phone numbers</li></ul>
 <div class="mp"><input id="uname" maxlength="16" placeholder="Username" autocomplete="off" spellcheck="false">
 <div style="font-size:13px;margin:8px 0 2px">🌐 Public servers</div><div id="srvs"></div><div id="mpnote">Looking for online servers...</div></div>
@@ -716,7 +716,7 @@ function botPlace(x,y,z,t,self){
  const i=idx(x,y,z);A[i]=t;own.set(i,self);botBlocks.push(i);dirty=true;
  if(botBlocks.length>350){const o=botBlocks.shift();A[o]=0;own.delete(o)}
  return true}
-// TNT: 3 second fuse, 50 damage, knockback + 2 second ragdoll
+// TNT: 3 second fuse, 5 damage (bots: 0.25 of their 5 hp, same 5%), knockback + 2 second ragdoll; 0.4s throw cooldown
 const tnts=[],fxs=[];let tntLast=0;
 const tntTex=(()=>{const cv=document.createElement('canvas');cv.width=cv.height=32;const x=cv.getContext('2d');
  x.fillStyle='#c4281c';x.fillRect(0,0,32,32);x.fillStyle='#9e1d14';for(let i=0;i<32;i+=8)x.fillRect(0,i,32,1);
@@ -729,7 +729,7 @@ function addTNT(x,y,z,vx,vy,vz,owner){
  S.add(m);tnts.push({m,fl,x,y,z,vx,vy,vz,t:3,owner})}
 function spawnTNT(){
  if(!started||editing||rd.on)return;
- const now=performance.now();if(now-tntLast<600||tnts.length>=8)return;tntLast=now;
+ const now=performance.now();if(now-tntLast<400||tnts.length>=8)return;tntLast=now;
  const d=new THREE.Vector3(0,0,-1).applyEuler(C.rotation);
  const m=new THREE.Mesh(tntGeo,tntMat),fl=new THREE.Mesh(tntGeo,tntFl);fl.scale.setScalar(1.03);m.add(fl);
  let x=p.x+d.x*1.2,y=p.y+1.1+d.y*1.2,z=p.z+d.z*1.2;if(tntHit(x,y,z)){x=p.x;y=p.y+1;z=p.z}
@@ -748,11 +748,11 @@ function explode(q){
   if(r2.on){for(const pt of r2.pts){pt.vx+=v[0];pt.vy+=v[1];pt.vz+=v[2]}r2.t=0;r2.fixed=true;r2.dur=2}
   else startRD(r2,ch,x,y,z,yaw,v[0],v[1],v[2],2)};
  const pe=eff(p.x,p.y,p.z,1);
- if(pe){if(pe.d<RD){hp-=50;hurt=.6;if(q.owner&&q.owner.peer){lastAtk=q.owner.peer;lastAtkName=q.owner.name}}else hurt=.2;emote=-1;push(rd,P1,p.x,p.y,p.z,p.yaw,pe.v)}
+ if(pe){if(pe.d<RD){hp-=5;hurt=.35;if(q.owner&&q.owner.peer){lastAtk=q.owner.peer;lastAtkName=q.owner.name}}else hurt=.2;emote=-1;push(rd,P1,p.x,p.y,p.z,p.yaw,pe.v)}
  for(const z of zs){
   if(z.hp<=0)continue;const e=eff(z.x,z.y,z.z,1.8);if(!e)continue;
   z.fl=.12;tint(z,true);z.bq=[];z.up=0;z.cover=0;z.hold=0;z.bk=null;
-  if(e.d<RD){z.hp-=2.5;if(z.hp<=0){if(!z.dead){z.dead=1;if(q.owner==='player')kills++;feed((q.owner==='player'?'You':q.owner.name)+' blew up '+z.name)}continue}}
+  if(e.d<RD){z.hp-=.25;if(z.hp<=0){if(!z.dead){z.dead=1;if(q.owner==='player')kills++;feed((q.owner==='player'?'You':q.owner.name)+' blew up '+z.name)}continue}}
   push(z.rd,z.c,z.x,z.y,z.z,z.g.rotation.y,e.v);
  }
  // blast destroys PLACED blocks (player's and bots') inside the radius; natural terrain is untouched
